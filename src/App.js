@@ -1,13 +1,35 @@
 import React, { Component } from 'react';
 import './App.css';
-//import ReactDOM from 'react-dom';
+import { DataTable } from 'react-data-components';
+
+
+function buildTable(data) {
+
+  const tableColumns = [
+    { title: 'id', prop: 'id' },
+    { title: 'firstName', prop: 'firstName' },
+    { title: 'lastName', prop: 'lastName' },
+    { title: 'email', prop: 'email' },
+    { title: 'phone', prop: 'phone' },
+  ];
+
+  return (
+    <DataTable
+      className="container"
+      keys="email"
+      columns={tableColumns}
+      initialData={data}
+      initialPageLength={5}
+      initialSortBy={{ prop: 'lastName', order: 'descending' }}
+      pageLengthOptions={[5, 20, 50]}
+    />
+  );
+}
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: null,
-      isLoaded: false,
       hideList: true,
       items: [],
       id: -1,
@@ -20,47 +42,32 @@ class App extends Component {
       .then(resp => resp.json())
       .then(
         (data) => {
-          console.log(data)
+          //  console.log(data)
           this.setState({
-            isLoaded: true,
             items: data
           });
         },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
       );
-      window.addEventListener('beforeunload', () => {
-        this.closeWindowPortal();
-      });
   }
 
-  handleChange(id) {
-    this.setState(state => ({
-      hideList: !state.hideList,
-      id: id
-    }));
- 
-  }
+  //handleChange(id) {
+  //  this.setState(state => ({
+  //    hideList: !state.hideList,
+  //    id: id
+  //  }));
+
+  //}
+
+
 
   render() {
-    //const { error, isLoaded, items, id } = this.state;
+    console.log(this.state);
+    const { items } = this.state;
+    return (
+      buildTable(items)
 
-    if (this.state.error) {
-      return <div>Error: {this.state.error.message}</div>;
-    } else if (!this.state.isLoaded) {
-      return <div>Loading...</div>;
-    } else {
-      return (
-        <div>
-        Table
-        </div>
       )
-    }
   }
 }
 
-    export default App;
+export default App;
