@@ -16,7 +16,7 @@ function buildTable(data) {
   return (
     <DataTable
       className="container"
-      keys="email"
+      keys="item + email"
       columns={tableColumns}
       initialData={data}
       initialPageLength={5}
