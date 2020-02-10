@@ -31,7 +31,7 @@ code {
 }
 
 .sort-icon:after {
-  float: right;
+
   color: hsl(20, 0%, 70%);
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
