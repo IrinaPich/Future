@@ -42,8 +42,8 @@ function buildTable(data) {
         getTdProps={(state, rowInfo, column, instance) => {
           return {
             onClick: (e, handleOriginal) => {
-              console.log('It was in this row:', rowInfo)
-              console.log('!!!' + rowInfo.original.address.city)
+              //console.log('It was in this row:', rowInfo)
+              //console.log('!!!' + rowInfo.original.address.city)
               document.getElementById("details").innerHTML =
                 `Выбран пользователь <b> ${rowInfo.original.firstName}</b><br>
                
@@ -67,7 +67,7 @@ function buildTable(data) {
 
 
       />
-      <p id="details">Additional info of onClicked row</p>
+      <p id="details" className="container">Additional info of onClicked row</p>
 
 
     </div>
@@ -85,30 +85,30 @@ class App extends Component {
       error: null,
       isLoaded: false,
     };
-    console.log("Loaded"+ this.state.bigData);
+    //console.log("Loaded"+ this.state.bigData);
     this.checkData = this.checkData.bind(this);
     this.fetchData = this.fetchData.bind(this);
 
   }
 
   checkData(e) {
-    console.log("onClick1"+ this.state.bigData);
+    //console.log("onClick1"+ this.state.bigData);
 
     this.fetchData()
-    
-   // fetchData(bigData);
+
+    // fetchData(bigData);
     this.setState(state => ({
-      
+
       bigData: !this.state.bigData
     }));
-console.log("onClick2"+ this.state.bigData);
+    //console.log("onClick2"+ this.state.bigData);
 
   }
 
   fetchData() {
 
     if (!this.state.bigData) {
-      console.log("32")
+      //console.log("32")
       fetch("http://www.filltext.com/?rows=32&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}")
         .then(resp => resp.json())
         .then(
@@ -130,7 +130,7 @@ console.log("onClick2"+ this.state.bigData);
         );
     }
     else if (this.state.bigData) {
-      console.log("1000")
+      //console.log("1000")
       fetch("http://www.filltext.com/?rows=1000&id={number|1000}&firstName={firstName}&delay=3&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}")
 
         .then(resp => resp.json())
@@ -160,7 +160,7 @@ console.log("onClick2"+ this.state.bigData);
 
 
   render() {
-    console.log(this.state);
+    //console.log(this.state);
     const { items } = this.state;
     return (
       <div>
