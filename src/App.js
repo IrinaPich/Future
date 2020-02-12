@@ -33,7 +33,7 @@ function buildTable(data) {
         resolveData={data => data.map(row => row)}
         initialPageLength={5}
         initialSortBy={{ prop: 'lastName', order: 'descending' }}
-        pageLengthOptions={[5, 20, 50]}
+        pageSizeOptions={[5, 20, 50]}
         defaultPageSize={10}
         progressPending={true}
         filterable={true}
