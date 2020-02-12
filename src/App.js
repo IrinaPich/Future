@@ -51,7 +51,7 @@ function buildTable(data) {
           }
         }}
       />
-      <p id="details" className="container">Additional info of onClicked row</p>
+      <p id="details" className="container">* Click any row for additional info</p>
     </div>
 
   );
