@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-//import { DataTable } from 'react-data-components';
 import ReactTable from 'react-table-6'
 import 'react-table-6/react-table.css'
 
@@ -37,7 +36,7 @@ function buildTable(data) {
             onClick: (e, handleOriginal) => {
               //console.log('It was in this row:', rowInfo)
               document.getElementById("details").innerHTML =
-                `Выбран пользователь <b> ${rowInfo.original.firstName}</b><br>
+              `Выбран пользователь <b> ${rowInfo.original.firstName}</b><br>
               Описание:<br><textarea>${rowInfo.original.description}</textarea><br>
               Адрес проживания: <b>${rowInfo.original.address.streetAddress}</b>
               <br>Город: <b>${rowInfo.original.address.city}</b><br>
@@ -51,15 +50,15 @@ function buildTable(data) {
           }
         }}
       />
-      <p id="details" className="container">* Click any row for additional info</p>
+      <p id="details">* Click any row for additional info</p>
     </div>
 
   );
 }
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.checkData = this.checkData.bind(this);
     this.state = {
       items: [],
@@ -70,6 +69,33 @@ class App extends Component {
 
     this.checkData = this.checkData.bind(this);
     this.fetchData = this.fetchData.bind(this);
+    this.mySubmitHandler = this.mySubmitHandler.bind(this);
+  }
+
+  mySubmitHandler (event) {
+    event.preventDefault();
+    const
+    { items } = this.state,
+    id = parseInt(this.refs.id.value),
+    firstName = this.refs.firstName.value,
+    lastName = this.refs.lastName.value,
+    email = this.refs.email.value,
+    phone = this.refs.phone.value;
+    this.setState({
+      items: [...items, {
+        id,
+        firstName,
+        lastName,
+        email,
+        phone
+      }]
+    }, () => {
+      this.refs.id.value = 0;
+      this.refs.firstName.value = '';
+      this.refs.lastName.value = '';
+      this.refs.email.value = '';
+      this.refs.phone.value = '';
+    });
   }
 
   checkData(e) {
@@ -101,9 +127,7 @@ class App extends Component {
         );
     }
     else if (this.state.bigData) {
-      //console.log("1000")
       fetch("http://www.filltext.com/?rows=1000&id={number|1000}&firstName={firstName}&delay=3&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}")
-
         .then(resp => resp.json())
         .then(
           (data) => {
@@ -133,29 +157,57 @@ class App extends Component {
     } else if (!this.state.isLoaded) {
       return <div>Loading...</div>;
     } else {
-    const { items } = this.state;
-    return (
-      <div>
-        <h1 className="container">Table</h1>
-        <form>
-          <p className="container">
-            <label>
-              <input
-                type="checkbox"
-                className="filled-in"
-                checked={this.state.bigData}
-                onChange={this.checkData}
-              />
-              {' '}
-              <span>Small volume Data</span>
-            </label>
-          </p>
-        </form>
-        {buildTable(items)}
-      </div>
-    )
+      const { items } = this.state;
+      console.log('render',this.state.items);
+      return (
+        <div className="container">
+          <h1>Table</h1>
+          <form>
+            <input
+              type="checkbox"
+              className="filled-in"
+              checked={this.state.bigData}
+              onChange={this.checkData}
+            />
+            {' '}
+            <span>Small volume Data</span>
+          </form>
+          <form onSubmit={this.mySubmitHandler}>
+            <input
+              type='number'
+              ref='id'
+              placeholder='id'
+            />
+            <input
+              type='text'
+              ref='firstName'
+              placeholder='firstName'
+            />
+            <input
+              type='text'
+              ref='lastName'
+              placeholder='lastName'
+            />
+            <input
+              type='text'
+              ref='email'
+              placeholder='email'
+            />
+            <input
+              type='text'
+              ref='phone'
+              placeholder='phone'
+            />
+            <input
+              type='submit'
+              value='Добавить в таблицу'
+            />
+          </form>
+          {buildTable(items)}
+        </div>
+      )
+    }
   }
-}
 }
 
 
