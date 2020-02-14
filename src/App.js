@@ -27,7 +27,6 @@ function buildTable(data) {
         defaultPageSize={10}
         progressPending={true}
         filterable={true}
-
         loadingText={'Loading...'}
         loading={false}
         getLoadingProps={() => ({})}
@@ -36,7 +35,7 @@ function buildTable(data) {
             onClick: (e, handleOriginal) => {
               //console.log('It was in this row:', rowInfo)
               document.getElementById("details").innerHTML =
-              `Выбран пользователь <b> ${rowInfo.original.firstName}</b><br>
+                `Выбран пользователь <b> ${rowInfo.original.firstName}</b><br>
               Описание:<br><textarea>${rowInfo.original.description}</textarea><br>
               Адрес проживания: <b>${rowInfo.original.address.streetAddress}</b>
               <br>Город: <b>${rowInfo.original.address.city}</b><br>
@@ -72,22 +71,24 @@ class App extends Component {
     this.mySubmitHandler = this.mySubmitHandler.bind(this);
   }
 
-  mySubmitHandler (event) {
+  mySubmitHandler(event) {
     event.preventDefault();
     const
-    { items } = this.state,
-    id = parseInt(this.refs.id.value),
-    firstName = this.refs.firstName.value,
-    lastName = this.refs.lastName.value,
-    email = this.refs.email.value,
-    phone = this.refs.phone.value;
+      { items } = this.state,
+      id = parseInt(this.refs.id.value),
+      firstName = this.refs.firstName.value,
+      lastName = this.refs.lastName.value,
+      email = this.refs.email.value,
+      phone = this.refs.phone.value,
+      address = {city: '', streetAddress: '', state: '', zip: ''};
     this.setState({
       items: [...items, {
         id,
         firstName,
         lastName,
         email,
-        phone
+        phone,
+        address
       }]
     }, () => {
       this.refs.id.value = 0;
@@ -158,7 +159,7 @@ class App extends Component {
       return <div>Loading...</div>;
     } else {
       const { items } = this.state;
-      console.log('render',this.state.items);
+      console.log('render', this.state.items);
       return (
         <div className="container">
           <h1>Table</h1>
@@ -173,27 +174,27 @@ class App extends Component {
             <span>Small volume Data</span>
           </form>
           <form onSubmit={this.mySubmitHandler}>
-            <input
-              type='number'
+            <input required
+              type='number' pattern="\d+"
               ref='id'
               placeholder='id'
             />
-            <input
+            <input required 
               type='text'
               ref='firstName'
               placeholder='firstName'
             />
-            <input
+            <input required 
               type='text'
               ref='lastName'
               placeholder='lastName'
             />
-            <input
-              type='text'
+            <input required
+              type='email'
               ref='email'
               placeholder='email'
             />
-            <input
+            <input required
               type='text'
               ref='phone'
               placeholder='phone'
@@ -209,6 +210,5 @@ class App extends Component {
     }
   }
 }
-
 
 export default App;
