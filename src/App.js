@@ -20,7 +20,6 @@ function buildTable(data) {
         Header="Table"
         columns={columns}
         data={data}
-        resolveData={data => data.map(row => row)}
         initialPageLength={5}
         initialSortBy={{ prop: 'lastName', order: 'descending' }}
         pageSizeOptions={[5, 20, 50]}
@@ -64,11 +63,13 @@ class App extends Component {
       bigData: false,
       error: null,
       isLoaded: false,
+      showForm: false,
     };
 
     this.checkData = this.checkData.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.mySubmitHandler = this.mySubmitHandler.bind(this);
+    this.appendData = this.appendData.bind(this);
   }
 
   mySubmitHandler(event) {
@@ -80,8 +81,9 @@ class App extends Component {
       lastName = this.refs.lastName.value,
       email = this.refs.email.value,
       phone = this.refs.phone.value,
-      address = {city: '', streetAddress: '', state: '', zip: ''};
+      address = { city: '', streetAddress: '', state: '', zip: '' };
     this.setState({
+     // showForm: false,
       items: [...items, {
         id,
         firstName,
@@ -91,11 +93,17 @@ class App extends Component {
         address
       }]
     }, () => {
-      this.refs.id.value = 0;
+      this.refs.id.value = '';
       this.refs.firstName.value = '';
       this.refs.lastName.value = '';
       this.refs.email.value = '';
       this.refs.phone.value = '';
+    });
+  }
+
+  appendData() {
+    this.setState({
+      showForm: true
     });
   }
 
@@ -117,6 +125,7 @@ class App extends Component {
               items: data,
               bigData: true,
               isLoaded: true,
+              showForm: false,
             });
           },
 
@@ -136,6 +145,7 @@ class App extends Component {
               items: data,
               bigData: false,
               isLoaded: true,
+              showForm: false,
             });
           },
 
@@ -159,7 +169,7 @@ class App extends Component {
       return <div>Loading...</div>;
     } else {
       const { items } = this.state;
-      console.log('render', this.state.items);
+      //console.log('render', this.state.items);
       return (
         <div className="container">
           <h1>Table</h1>
@@ -173,37 +183,45 @@ class App extends Component {
             {' '}
             <span>Small volume Data</span>
           </form>
-          <form onSubmit={this.mySubmitHandler}>
-            <input required
-              type='number' pattern="\d+"
-              ref='id'
-              placeholder='id'
-            />
-            <input required 
-              type='text'
-              ref='firstName'
-              placeholder='firstName'
-            />
-            <input required 
-              type='text'
-              ref='lastName'
-              placeholder='lastName'
-            />
-            <input required
-              type='email'
-              ref='email'
-              placeholder='email'
-            />
-            <input required
-              type='text'
-              ref='phone'
-              placeholder='phone'
-            />
-            <input
-              type='submit'
-              value='Добавить в таблицу'
-            />
-          </form>
+          {this.state.showForm &&
+            <form onSubmit={this.mySubmitHandler}>
+              <input required
+                type='number' pattern="\d+"
+                ref='id'
+                placeholder='id'
+              />
+              <input required
+                type='text'
+                ref='firstName'
+                placeholder='firstName'
+              />
+              <input required
+                type='text'
+                ref='lastName'
+                placeholder='lastName'
+              />
+              <input required
+                type='email'
+                ref='email'
+                placeholder='email'
+              />
+              <input required
+                type='text'
+                ref='phone'
+                placeholder='phone'
+              />
+              <input
+                type='submit'
+                value='Добавить в таблицу'
+              />
+            </form>
+          }
+
+          {!this.state.showForm &&
+            <button onClick={(e) => this.appendData(e)}>Добавить</button>
+          }
+            <p id="append">* Click the button to add new data</p>
+
           {buildTable(items)}
         </div>
       )
